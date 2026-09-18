@@ -8,7 +8,7 @@ SoloSpec is a collection of Markdown instructions and templates. It does not orc
 
 ## Getting started
 
-For an existing project, use the integration prompt below to let your agent fetch the template and merge the conventions. For manual adoption, merge the needed content from `AGENTS.md`, `docs/`, and `templates/`; the optional ADR skill lives in `.agents/skills/adr-workflow/`. Read existing files before merging and preserve the project's content.
+For an existing project, use the integration prompt below to let your agent fetch the template and merge the conventions. For manual adoption, merge the needed content from `AGENTS.md` and `docs/`; document templates live in `docs/templates/`, and the optional ADR skill lives in `.agents/skills/adr-workflow/`. Read existing files before merging and preserve the project's content.
 
 Once integrated, describe the work you want done. The agent follows the project conventions to read relevant guidelines, implement, and verify. It creates a task record only when work must continue across sessions, involves multiple dependent stages, or you explicitly request a record.
 
@@ -97,7 +97,7 @@ docs/adr/index.md                 Decision index
 docs/adr/template.md              Decision template
 docs/spec/index.md                Project guideline entry point
 docs/tasks/README.md              Task locations and legacy adoption
-templates/task.md                 Task template
+docs/templates/task.md            Task template
 .agents/skills/adr-workflow/       Optional ADR skill source
 .claude/skills/adr-workflow        Relative symlink to the skill source
 ```

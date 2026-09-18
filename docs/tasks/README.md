@@ -1,6 +1,6 @@
 # 任务记录
 
-完整创建与续接规则见 [AGENTS.md](../../AGENTS.md)，正文格式见 [任务模板](../../templates/task.md)。
+完整创建与续接规则见 [AGENTS.md](../../AGENTS.md)，正文格式见 [任务模板](../templates/task.md)。
 
 新记录的位置固定为 `docs/tasks/YYYY-MM-DD-<topic>/task.md`。主题使用小写英文和短横线，日期为本地创建日期。创建时将模板复制到该路径并填写，不运行任何任务管理命令。
 

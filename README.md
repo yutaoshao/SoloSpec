@@ -8,7 +8,7 @@ SoloSpec 是一组 Markdown 规则与模板。它不调度 Agent、不管理进�
 
 ## 开始使用
 
-已有项目可以直接使用下面的接入提示词，让 Agent 获取模板并合并规则。若希望手动接入，将 `AGENTS.md`、`docs/` 和 `templates/` 中需要的内容合并到项目；可选 ADR 技能位于 `.agents/skills/adr-workflow/`。已有同名文件时先阅读再合并，保留项目原有内容。
+已有项目可以直接使用下面的接入提示词，让 Agent 获取模板并合并规则。若希望手动接入，将 `AGENTS.md` 和 `docs/` 中需要的内容合并到项目；文档模板位于 `docs/templates/`，可选 ADR 技能位于 `.agents/skills/adr-workflow/`。已有同名文件时先阅读再合并，保留项目原有内容。
 
 接入完成后，直接向 Agent 描述你要做的事情。Agent 会按项目约定读取相关规范、执行并验证；只有需要跨会话继续、包含多个有依赖的实施阶段，或你明确要求记录时，才创建任务文档。
 
@@ -97,7 +97,7 @@ docs/adr/index.md                 决策索引
 docs/adr/template.md              决策模板
 docs/spec/index.md                项目规范入口
 docs/tasks/README.md              任务位置与旧项目接入说明
-templates/task.md                 任务模板
+docs/templates/task.md            任务模板
 .agents/skills/adr-workflow/       可选 ADR 技能源
 .claude/skills/adr-workflow        指向技能源的相对符号链接
 ```
