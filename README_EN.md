@@ -2,13 +2,15 @@
 
 [English](README_EN.md) | [中文](README.md)
 
-**Lightweight AI project conventions for solo developers: preserve decisions and essential knowledge while keeping everyday development simple.**
+**Lightweight AI project conventions for solo developers: preserve current system behavior, decisions, and essential knowledge while keeping everyday development simple.**
 
 SoloSpec is a collection of Markdown instructions and templates. It does not orchestrate agents, manage processes, maintain a task database, or require a runtime. Its workflow has four steps: read relevant constraints → record when needed → implement and verify → deliver and preserve useful knowledge.
 
+The goal is to explain how the system currently works, not to rebuild it after deleting source code. Distinguish implemented, planned, and paused capabilities from external acceptance status. When documentation and implementation disagree, check the evidence rather than automatically treating a defect as the intended rule.
+
 ## Getting started
 
-For an existing project, use the integration prompt below to let your agent fetch the template and merge the conventions. For manual adoption, merge the needed content from `AGENTS.md` and `docs/`; document templates live in `docs/templates/`, and the optional ADR skill lives in `.agents/skills/adr-workflow/`. Read existing files before merging and preserve the project's content.
+For an existing project, use the integration prompt below to let your agent fetch the template and merge the conventions. For manual adoption, merge the needed content from `AGENTS.md` and `docs/`; document templates live in `docs/templates/`, and the optional ADR skill lives in `.agents/skills/adr-workflow/`. Read existing files before merging and preserve the project's content. Later template updates do not automatically propagate to adopted projects; merge an upgrade when needed.
 
 Once integrated, describe the work you want done. The agent follows the project conventions to read relevant guidelines, implement, and verify. It creates a task record only when work must continue across sessions, involves multiple dependent stages, or you explicitly request a record.
 
@@ -29,18 +31,24 @@ Destination: the current project root.
 Read the template files from the repository's default branch. You may download or clone them into a new temporary directory outside the target project as a read-only source. Do not replace the current project with the template repository or copy its .git directory. If the source is inaccessible, report the specific cause and request an accessible URL or local template path instead of inventing template content.
 
 Read the destination's existing AGENTS.md, CLAUDE.md, relevant project instructions, and documentation structure before making changes:
-1. Merge the template's four-step workflow, task-record conventions, and ADR conventions into the project instructions. Preserve existing rules and remove duplication. Existing project conventions take precedence in substantive conflicts; explain and clarify unresolved conflicts instead of silently overwriting them.
-2. Add missing ADR, spec, and task entry points and the task template. Reuse existing ADR or spec directories where possible; update directory conventions and references throughout the adopted instructions, templates, and optional skill instead of creating a second source of truth. Keep legacy task records in their existing locations and formats, and document their entry points.
-3. Follow the target project's documentation language, translating template guidance as needed while preserving paths, code, and status values. Register guidelines and check commands only from actual code and existing documentation. Leave unknown information explicitly empty; do not invent a stack, decisions, or test results.
+1. Merge the template's four-step workflow, task-record conventions, current-behavior documentation, and ADR conventions into the project instructions. Preserve existing rules and remove duplication. Existing project conventions take precedence in substantive conflicts; explain and clarify unresolved conflicts instead of silently overwriting them.
+2. Add missing ADR, spec, and task entry points, plus task and feature-description templates. Reuse existing ADR or spec directories where possible; update directory conventions and references throughout the adopted instructions, templates, and optional skill instead of creating a second source of truth. Keep legacy task records in their existing locations and formats, and document their entry points.
+3. Follow the target project's documentation language, translating template guidance as needed while preserving paths, code, and status values. Current specs directly explain a feature's purpose, roles and permissions, flow, key rules, data or state changes, and primary exceptional outcomes so a reader can understand the system without first reading code; ADRs, task records, and source links are background or verification only. Register guidelines and check commands only from actual code and existing documentation. Leave unknown information explicitly empty; do not invent a stack, decisions, or test results.
 4. Keep the shared rules in AGENTS.md. For Claude Code, add a missing @AGENTS.md import to the root CLAUDE.md, preserving existing content and avoiding duplicate or circular imports. Keep the optional ADR skill in .agents/skills/adr-workflow/ as its single source; use a relative symlink from .claude/skills/adr-workflow to ../../.agents/skills/adr-workflow. Inspect and merge any existing file, directory, or link instead of overwriting it. If symlinks are unavailable, add an instruction to CLAUDE.md to read the source SKILL.md for lasting architectural decisions; do not require native skill discovery or install a runtime.
 5. Preserve the destination's README, LICENSE, Git history, and unrelated files. Do not overwrite them with SoloSpec's project description or license; retain the required MIT notice for copied template content.
 6. Do not introduce hooks, a task database, phase approvals, or automatic commits. Do not bulk-migrate historical documents just to adopt this template.
 
-Check relative links, the CLAUDE.md import, and the optional skill link to ensure they resolve to the same source files inside the target project. Verify that simple tasks need no record, complex tasks have a defined location, a new session can identify work by its objective, and lasting decisions go into a single ADR directory.
+Check relative links, the CLAUDE.md import, and the optional skill link to ensure they resolve to the same source files inside the target project. Verify that simple tasks need no record, complex tasks have a defined location, a new session can identify work by its objective, current behavior is clear from domain specs, frequent small requests update existing specs, and material long-term trade-offs go into a single ADR directory.
 Report added and changed files, reused directories, verification results, and unresolved issues. Do not commit or push to Git.
 ```
 
 This prompt authorizes changes to integration files in the current project. Confirm that you have opened the intended destination. For your own fork, replace the source URL; for offline adoption, replace it with the absolute path to an existing local template. For a read-only assessment, replace the first sentence with: “Assess how SoloSpec would fit this project and propose file changes without modifying files.”
+
+## Adopted projects: upgrading the template
+
+SoloSpec is a copyable template, not a shared runtime configuration between projects. Updating the SoloSpec repository does not automatically change adopted projects. Upgrade each destination by merging the relevant rules, using that project's existing conventions and actual system as the authority.
+
+To add current-behavior documentation, first read the destination's `AGENTS.md`, `docs/spec/index.md`, `docs/templates/`, and ADR skill. Then merge these rules: specs describe current effective behavior, not only stable constraints; feature or rule changes update the existing domain spec; specs state current conclusions directly; frequent small requests update the same spec; only material long-term trade-offs need ADRs; and `docs/templates/feature.md` is available when a new feature description is needed. Do not overwrite project rules, product documentation, historical records, or existing templates with the generic template.
 
 ## Switching between Codex and Claude Code
 
@@ -73,14 +81,15 @@ SoloSpec hands off work through files. It does not transfer chat history, runnin
 | Content | Location | When to write it |
 | --- | --- | --- |
 | Decisions and trade-offs | `docs/adr/` | A choice affects long-term maintenance |
-| Stable constraints | `docs/spec/` | Future implementations must keep following a rule |
+| Current behavior and necessary constraints | `docs/spec/` | A feature, rule, or important constraint changes |
 | Tasks and handoffs | `docs/tasks/YYYY-MM-DD-<topic>/task.md` | Work spans sessions or dependent stages, or a recorded plan is requested |
 
-ADRs explain why, specs describe constraints, and task records track current progress. Connect them with links rather than duplicating content.
+ADRs explain why, specs directly describe how the system currently works and its necessary constraints, and task records track current progress. Connect them with links rather than duplicating content; a spec must not leave its conclusion only in a linked document.
 
 ## Usage scenarios
 
-- **Fix wording or a local bug:** read the relevant constraints, make the change, and verify it without creating a task record.
+- **Fix wording or a local bug:** read the relevant spec, make the change, and verify it; update the existing spec when the behavior description changes, without creating a task record.
+- **Frequently adjust filters, fields, or defaults:** update the same domain spec and let Git preserve the history; do not create an ADR for every change.
 - **Replace storage in stages:** create a task record when needed, consult relevant ADRs, and document the lasting decision and necessary constraints once the direction is clear.
 - **Resume unfinished work:** prefer an explicit path; otherwise match records by objective and next steps. Clarify ambiguity instead of guessing the “latest task.”
 - **Record a project-wide decision:** create an ADR directly without manufacturing an accompanying task or spec.
@@ -98,6 +107,7 @@ docs/adr/template.md              Decision template
 docs/spec/index.md                Project guideline entry point
 docs/tasks/README.md              Task locations and legacy adoption
 docs/templates/task.md            Task template
+docs/templates/feature.md         Lightweight feature-description template
 .agents/skills/adr-workflow/       Optional ADR skill source
 .claude/skills/adr-workflow        Relative symlink to the skill source
 ```
@@ -112,7 +122,7 @@ SoloSpec is intended for solo development and maintenance. You can add ownership
 
 ## Publishing your own copy
 
-You can fork or download this repository to publish your own template. Replace the source URL in both README integration prompts with your own repository URL. The decision and spec entry points start empty and are filled with real project information by adopters; keep product-project history out of the reusable template.
+You can fork or download this repository to publish your own template. Replace the source URL in both README integration prompts with your own repository URL. The decision and spec entry points start empty and are filled with real project information by adopters; keep product-project history out of the reusable template. Adopted projects do not automatically synchronize with a template release; merge upgrades through the adopted-project workflow.
 
 ## Origins and license
 
